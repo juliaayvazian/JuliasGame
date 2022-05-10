@@ -21,11 +21,12 @@ public class PlayState extends GameState{
     public void update(){
 
     }
+
     public void input(MouseHandler mouseHandler, KeyHandler keyHandler){
 
     }
-    public void render(Graphics2D g){
-        Sprite.drawArray(g, font, "DIN MAMMA", new Vector2f(100, 100), 32, 32, 32, 0);
 
+    public void render(Graphics2D g){
+        Sprite.drawArray(g, font, "Willy Wanker", new Vector2f(100, 100), 32, 32, 16, 0);
     }
 }

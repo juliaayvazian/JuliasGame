@@ -45,15 +45,19 @@ public class Sprite {
         setWidth(width);
         setHeight(height);
     }
+
     public void setWidth(int i){
         w=i;
         wSprite = SPRITESHEET.getWidth() / w;
     }
+
     public void setHeight(int i) {
         h = i;
         hSprite = SPRITESHEET.getHeight() / h;
     }
+
     public int getWidth(){ return w; }
+
     public int getHeight(){ return h; }
 
     private BufferedImage loadSprite(String file){
@@ -65,7 +69,8 @@ public class Sprite {
             }
             return sprite;
         }
-        public void loadSpriteArray(){
+
+    public void loadSpriteArray(){
         spriteArray = new BufferedImage[wSprite][hSprite];
 
         for(int x = 0; x < wSprite; x++){
@@ -74,13 +79,17 @@ public class Sprite {
             }
         }
     }
+
     public BufferedImage getSPRITESHEET(){ return SPRITESHEET;}
+
     public BufferedImage getSprite(int x, int y){
         return SPRITESHEET.getSubimage(x * w, y * h, w, h);
     }
+
     public BufferedImage[] getSpriteArray(int i){
         return spriteArray[i];
     }
+
     public BufferedImage[][] getSpriteArray2(int i){
         return spriteArray;
     }
@@ -97,6 +106,7 @@ public class Sprite {
             y += yOffSet;
         }
     }
+
     public static void drawArray(Graphics2D g, Font f, String word, Vector2f pos, int width, int height, int xOffSet, int yOffSet){
         float x = pos.x;
         float y = pos.y;
@@ -104,8 +114,8 @@ public class Sprite {
         for(int i = 0; i < word.length(); i++){
             if(word.charAt(i) != 32)
                 g.drawImage(f.getFont(word.charAt(i)), (int) x, (int) y, width, height, null);
+            x += xOffSet; // (fix) moved offset change inside the loop
+            y += yOffSet;
         }
-        x += xOffSet;
-        y += yOffSet;
     }
 }

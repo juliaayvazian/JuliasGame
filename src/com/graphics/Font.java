@@ -41,15 +41,19 @@ public class Font {
         setWidth(width);
         setHeight(height);
     }
+
     public void setWidth(int i){
         w=i;
         wLetter = FONTSHEET.getWidth() / w;
     }
+
     public void setHeight(int i) {
         h = i;
         hLetter = FONTSHEET.getHeight() / h;
     }
+
     public int getWidth(){ return w; }
+
     public int getHeight(){ return h; }
 
     private BufferedImage loadFont(String file){
@@ -61,6 +65,7 @@ public class Font {
         }
         return sprite;
     }
+
     public void loadSpriteArray(){
         spriteArray = new BufferedImage[wLetter][hLetter];
 
@@ -70,15 +75,18 @@ public class Font {
             }
         }
     }
+
     public BufferedImage getFontSheet(){ return FONTSHEET;}
+
     public BufferedImage getLetter(int x, int y){
         return FONTSHEET.getSubimage(x * w, y * h, w, h);
     }
+
     public BufferedImage getFont(char letter){
-        int value = letter;
+        int value = letter - 65; //(fix) added ASCII compensation
 
         int x = value % wLetter;
-        int y = value / hLetter;
-        return FONTSHEET.getSubimage(x, y, w, h);
+        int y = value / wLetter; //(fix) switched height to width
+        return getLetter(x, y); //(fix) dry your code, invoke the getLetter method
     }
 }

@@ -19,6 +19,7 @@ public class KeyHandler implements KeyListener{
             keys.add(this);
 
         }
+
         public void toggle(boolean pressed){
             if(pressed != down){
                 down =pressed;
@@ -27,15 +28,15 @@ public class KeyHandler implements KeyListener{
                 presses++;
             }
         }
+
         public void tick(){
             if(absorbs<presses){
                 absorbs++;
+                clicked =  true; // (fix) added clicked toggle
             }else{
                 clicked = false;
-
             }
         }
-
     }
 
     public Key up = new Key();
@@ -49,19 +50,17 @@ public class KeyHandler implements KeyListener{
 
     public KeyHandler(GamePanel game){
         game.addKeyListener(this);
-
     }
 
     public void releaseAll(){
         for(int i=0; i < keys.size(); i++){
             keys.get(i).down = false;
-
         }
     }
+
     public void tick(){
         for(int i=0; i < keys.size(); i++){
             keys.get(i).tick();
-
         }
     }
 
@@ -74,10 +73,6 @@ public class KeyHandler implements KeyListener{
         if(e.getKeyCode() == KeyEvent.VK_E) menu.toggle(pressed);
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) escape.toggle(pressed);
         if(e.getKeyCode() == KeyEvent.VK_ENTER) enter.toggle(pressed);
-
-
-
-
     }
     @Override
     public void keyTyped(KeyEvent e) {
@@ -89,12 +84,10 @@ public class KeyHandler implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         toggle(e, true);
-
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         toggle(e, false);
-
     }
 }
