@@ -11,7 +11,6 @@ public abstract class GameState {
 
     public GameState(GameStateManager gsm){
         this.gsm = gsm;
-
     }
 
     public abstract void update();

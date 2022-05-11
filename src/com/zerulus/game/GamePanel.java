@@ -30,29 +30,28 @@ public class GamePanel extends JPanel implements Runnable{
         setPreferredSize(new Dimension(width, height));
         setFocusable(true);
         requestFocus();
-
     }
+
     public void addNotify(){
         super.addNotify();
 
         if(thread == null) {
             thread = new Thread(this, "GameThread");
             thread.start();
-
         }
     }
+
     public void init(){
-    running = true;
-    image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-    graphics2D = (Graphics2D) image.getGraphics();
+        running = true;
+        image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        graphics2D = (Graphics2D) image.getGraphics();
 
-    mouseHandler = new MouseHandler(this);
-    keyHandler = new KeyHandler(this);
+        mouseHandler = new MouseHandler(this);
+        keyHandler = new KeyHandler(this);
 
-    gsm = new GameStateManager();
-
-
+        gsm = new GameStateManager();
     }
+
     public void run(){
         init();
 
@@ -67,11 +66,10 @@ public class GamePanel extends JPanel implements Runnable{
         final double TTBR = 1000000000/ TARGET_FPS; //Total time before render
 
         int frameCount = 0;
-        int lastSecondTime = (int) (lastUpdateTime) / 1000000000;
+        int lastSecondTime = (int) (lastUpdateTime / 1000000000); //(fix) moved the bracket to the end of the fraction
         int oldFrameCount = 0;
 
         while(running){
-
             double now = System.nanoTime();
             int updateCount = 0;
             while(((now-lastUpdateTime) > TBU) && (updateCount < MUBR)){
@@ -79,11 +77,12 @@ public class GamePanel extends JPanel implements Runnable{
                 input(mouseHandler, keyHandler);
                 lastUpdateTime += TBU;
                 updateCount++;
-
             }
+
             if(now-lastUpdateTime > TBU){
                 lastUpdateTime = now - TBU;
             }
+
             input(mouseHandler, keyHandler);
             render();
             draw();
@@ -93,16 +92,16 @@ public class GamePanel extends JPanel implements Runnable{
             int thisSecond = (int) (lastUpdateTime / 1000000000);
             if(thisSecond >  lastSecondTime){
                 if(frameCount != oldFrameCount){
-                    System.out.println("NEW SECOND" +thisSecond + "" + frameCount);
+                    System.out.println("NEW SECOND " + thisSecond + " " + frameCount); //(fix) added spaces
                     oldFrameCount=frameCount;
                 }
+
                 frameCount = 0;
                 lastSecondTime = thisSecond;
-
             }
+
             while(now - lastRendertime < TTBR && now - lastUpdateTime < TBU){
                 Thread.yield();
-
                 try{
                     Thread.sleep(1);
                 } catch (Exception e){
@@ -111,30 +110,29 @@ public class GamePanel extends JPanel implements Runnable{
                 now = System.nanoTime();
             }
         }
-
     }
 
     public void update(){
         gsm.update();
-
     }
+
     public void input(MouseHandler mouseHandler, KeyHandler keyHandler){
         gsm.input(mouseHandler, keyHandler);
 
     }
+
     public void render(){
         if(graphics2D != null){
             graphics2D.setColor(new Color(235, 211, 243));
             graphics2D.fillRect(0, 0, width, height);
             gsm.render(graphics2D);
         }
-
     }
+
     public void draw(){
-        Graphics g2 = (Graphics) this.§aphics();
+        Graphics g2 = (Graphics) this.getGraphics(); // (fix) changed Graphics() to getGraphics()
         g2.drawImage(image, 0, 0, width, height, null);
         g2.dispose();
-
     }
 
 }
